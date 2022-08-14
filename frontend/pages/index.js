@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Cards from 'react-credit-cards';
 import axios from 'axios';
 import 'react-credit-cards/es/styles-compiled.css';
+import Modal from '../components/Modal';
 
 export default function Home() {
   const [card, setCard] = useState({
@@ -12,6 +13,7 @@ export default function Home() {
     name: '',
     number: '',
   });
+  const [status, setStatus] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,6 +22,7 @@ export default function Home() {
       [name]: value,
     }));
   };
+  console.log('status: ', status);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,7 +31,9 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_API_URL}/card/`,
         card
       );
-      console.log(response);
+      console.log(response.data);
+      console.log(response.data.status);
+      setStatus(response.data.status);
     } catch (error) {
       console.error(error);
     }
@@ -41,7 +46,6 @@ export default function Home() {
       </Head>
       <main className='lg:min-h-full lg:overflow-hidden lg:flex lg:flex-row-reverse'>
         <h1 className='sr-only'>Checkout</h1>
-
         {/* Checkout form */}
         <section
           aria-labelledby='payment-heading'
@@ -158,6 +162,11 @@ export default function Home() {
             </form>
           </div>
         </section>
+        {status && status == true ? (
+          <Modal status={status} message={'Validation Successful'} />
+        ) : (
+          <Modal status={status} message={'Validation Failed'} />
+        )}
       </main>
     </div>
   );
