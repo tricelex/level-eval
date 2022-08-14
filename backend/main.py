@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from core.utils import Card, CardVerification
 
 
 app = FastAPI()
@@ -21,27 +21,25 @@ app.add_middleware(
 )
 
 
-class Card(BaseModel):
-    name: str
-    number: int
-
-
 @app.post("/card/")
 async def verify_card(card: Card):
-    print(card)
-    return {"card": card.name}
+    card_data = CardVerification(card.name, card.number, card.cvc, card.expiry)
+
+    pan = card_data.validate_pan()
+    cvv_status = card_data.validate_cvv()
+    expired = card_data.validate_expiry()
+    luhn = card_data.is_luhn_valid()
+
+    status = card_data.verify_card()
+    return {
+        "status": status,
+        "expired": expired,
+        "cvv_status": cvv_status,
+        "pan": pan,
+        "luhn": luhn,
+    }
 
 
 @app.get("/card/")
 async def get_verify_card():
-    return {"Hello": "World"}
-
-
-@app.get("/notes/")
-async def read_notes():
-    return {"Hello": "World"}
-
-
-@app.post("/notes/")
-async def create_note():
     return {"Hello": "World"}

@@ -1,0 +1,8 @@
+POST http://localhost:8000/card/ HTTP/1.1
+
+{
+    "name": "str",
+    "number": 4111111111111111,
+    "cvc": 425,
+    "expiry": "10/22"
+}

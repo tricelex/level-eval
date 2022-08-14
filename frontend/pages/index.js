@@ -120,7 +120,6 @@ export default function Home() {
                       id='expiry'
                       name='expiry'
                       autoComplete='cc-exp'
-                      pattern='\d\d/\d\d'
                       required
                       onChange={handleChange}
                       className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
@@ -141,7 +140,6 @@ export default function Home() {
                       name='cvc'
                       id='cvc'
                       autoComplete='csc'
-                      pattern='\d{3,4}'
                       required
                       onChange={handleChange}
                       className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
